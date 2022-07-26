@@ -17,10 +17,9 @@ class UsersController {
         const hashedPassword = await hash(password, 8);
 
         //para testar o que está cadastrado no banco de dados
-        /*const resultado = database.all('SELECT * FROM users')
+        const resultado = database.all('SELECT * FROM users')
         console.log(resultado)
         resultado.then(console.log)
-        */
         
         const checkUserExist = await database.get('SELECT * FROM users WHERE email = (?)', [email])
         
