@@ -2,12 +2,16 @@ require("express-async-errors");
 const migrationsRun = require("./database/sqlite/migrations")
 const { response } = require("express");
 const express = require("express");
-const app = express();
-app.use(express.json()); //json = padrão utilizado no corpo da requisição (insomnia)
 
 //importar as rotas
 const routes = require("./routes");
 const AppError = require("./utils/AppError");
+const uploadConfig = require("./configs/upload");
+
+const app = express();
+app.use(express.json()); //json = padrão utilizado no corpo da requisição (insomnia)
+
+app.use("/files", express.static(uploadConfig.UPLOADS_FOLDER))
 
 app.use(routes);
 migrationsRun();
