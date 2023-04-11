@@ -17,9 +17,9 @@ class UsersController {
         const hashedPassword = await hash(password, 8);
 
         //para testar o que está cadastrado no banco de dados
-        const resultado = database.all('SELECT * FROM users')
-        console.log(resultado)
-        resultado.then(console.log)
+        // const resultado = database.all('SELECT * FROM users')
+        // console.log(resultado)
+        // resultado.then(console.log)
         
         const checkUserExist = await database.get('SELECT * FROM users WHERE email = (?)', [email])
         
@@ -34,11 +34,11 @@ class UsersController {
 
     async update (request, response){
         const { name, email, password, old_password } = request.body;
-        const { id } = request.params;
+        const user_id = request.user.id;
 
         const database = await sqliteConnection();
 
-        const user = await database.get("SELECT * FROM users WHERE id = (?)", [id]);
+        const user = await database.get("SELECT * FROM users WHERE id = (?)", [user_id]);
 
         if(!user){
             throw new AppError("Usuário não encontrado")
@@ -73,7 +73,7 @@ class UsersController {
         password = ?,
         updated_at = DATETIME ('now')
         WHERE id = ?`, 
-        [user.name, user.email, user.password, id]);
+        [user.name, user.email, user.password, user_id]);
 
         const resultado = database.all('SELECT * FROM users')
         console.log(resultado)
